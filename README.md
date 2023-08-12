@@ -11,7 +11,7 @@ GitHub action to set up llvm-msvc
 - name: Setup llvm-msvc
   uses: backengineering/setup-llvm-msvc@v2
   with:
-    version: llvm-msvc-build-v2.7
+    version: llvm-msvc-v2.9.3
     path: $GITHUB_WORKSPACE
 
 ```        
