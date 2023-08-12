@@ -27,8 +27,8 @@ runs:
       with:
         script: |
           const { data } = await github.repos.getLatestRelease({
-            owner: 'NewWorldComingSoon',
-            repo: 'llvm-msvc-build'
+            owner: 'backengineering',
+            repo: 'llvm-msvc'
           })
           console.log(data.tag_name)
           return data.tag_name
@@ -52,7 +52,7 @@ runs:
         
         if (!(Test-Path -Path $exe)) {
           Write-Host "Downloading llvm-msvc_X86_64_installer.exe..."
-          $url = 'https://github.com/NewWorldComingSoon/llvm-msvc-build/releases/download/' + $releaseVersion + '/llvm-msvc_X86_64_installer.exe'
+          $url = 'https://github.com/backengineering/llvm-msvc/releases/download/' + $releaseVersion + '/llvm-msvc_X86_64_installer.exe'
           Invoke-WebRequest -Uri $url -OutFile $exe
           Write-Host "llvm-msvc_X86_64_installer.exe downloaded successfully."
         } else {
