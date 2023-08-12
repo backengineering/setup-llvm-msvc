@@ -5,11 +5,11 @@ GitHub action to set up llvm-msvc
 ## Use it in your workflow like this:
 ```
 - name: Setup llvm-msvc
-  uses: backengineering/setup-llvm-msvc@v2
+  uses: backengineering/setup-llvm-msvc@v3
 ```
 ```
 - name: Setup llvm-msvc
-  uses: backengineering/setup-llvm-msvc@v2
+  uses: backengineering/setup-llvm-msvc@v3
   with:
     version: llvm-msvc-v2.9.3
     path: $GITHUB_WORKSPACE
@@ -27,7 +27,7 @@ API
 ## Example
 ```
 - name: Setup llvm-msvc
-  uses: backengineering/setup-llvm-msvc@v2
+  uses: backengineering/setup-llvm-msvc@v3
 
 - name: Checkout
   uses: actions/checkout@v2
