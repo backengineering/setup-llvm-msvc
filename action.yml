@@ -11,6 +11,10 @@ inputs:
     description: Path to store installer
     required: false
     default: $env:TEMP
+  token:
+    description: The GitHub token used to create an authenticated client
+    default: ${{ github.token }}
+    required: false
     
 runs:
   using: composite
@@ -23,10 +27,11 @@ runs:
 
     - name: Get the latest release of llvm-msvc
       id: llvm-msvc-latest_release
-      uses: actions/github-script@v4
+      uses: actions/github-script@v6
       with:
+        github-token: ${{ inputs.token }}
         script: |
-          const { data } = await github.repos.getLatestRelease({
+          const { data } = await github.request('GET /repos/{owner}/{repo}/releases/latest', {
             owner: 'backengineering',
             repo: 'llvm-msvc'
           })
