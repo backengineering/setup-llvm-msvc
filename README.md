@@ -5,14 +5,15 @@ GitHub action to set up llvm-msvc
 ## Use it in your workflow like this:
 ```
 - name: Setup llvm-msvc
-  uses: backengineering/setup-llvm-msvc@v3
+  uses: backengineering/setup-llvm-msvc@v5
 ```
 ```
 - name: Setup llvm-msvc
-  uses: backengineering/setup-llvm-msvc@v3
+  uses: backengineering/setup-llvm-msvc@v5
   with:
-    version: llvm-msvc-v2.9.3
+    version: llvm-msvc-v3.0.6
     path: $GITHUB_WORKSPACE
+    token: ${{ secrets.PAT }}
 
 ```        
 
@@ -23,11 +24,14 @@ API
 | --------- | -------     | ------- | -----------
 | version   | latest      | ✓       | Install the latest version available in the repository.
 | path      | $env:TEMP   | ✓       | Path to store installer.
+| token     | ${{ github.token }}   | ✓       | The GitHub token used to create an authenticated client.
 
 ## Example
 ```
 - name: Setup llvm-msvc
-  uses: backengineering/setup-llvm-msvc@v3
+  uses: backengineering/setup-llvm-msvc@v5
+  with:
+    token: ${{ secrets.PAT }}
 
 - name: Checkout
   uses: actions/checkout@v2
