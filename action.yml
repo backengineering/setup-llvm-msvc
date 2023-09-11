@@ -1,4 +1,3 @@
-
 name: Install llvm-msvc
 description: Install llvm-msvc
 
@@ -23,6 +22,7 @@ runs:
       run: |
         $psCommand = 'Start-Process ' + "`"${env:GITHUB_ACTION}`"" + ' -Verb RunAs'
         Start-Process powershell -Verb RunAs -ArgumentList 'Invoke-Expression', $psCommand
+        Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
       shell: powershell
 
     - name: Get the latest release of llvm-msvc
@@ -37,7 +37,7 @@ runs:
           })
           console.log(data.tag_name)
           return data.tag_name
-      
+  
     - name: Download and Install llvm-msvc_X86_64_installer.exe
       run: |
         Write-Host "Checking if llvm-msvc_X86_64_installer.exe already exists."
@@ -57,9 +57,25 @@ runs:
         
         if (!(Test-Path -Path $exe)) {
           Write-Host "Downloading llvm-msvc_X86_64_installer.exe..."
-          $url = 'https://github.com/backengineering/llvm-msvc/releases/download/' + $releaseVersion + '/llvm-msvc_X86_64_installer.exe'
-          Invoke-WebRequest -Uri $url -OutFile $exe
-          Write-Host "llvm-msvc_X86_64_installer.exe downloaded successfully."
+          $owner = "backengineering"
+          $repo = "llvm-msvc"
+          $tag = $releaseVersion
+          $file = "llvm-msvc_X86_64_installer.exe"
+          $credentials="${{ inputs.token }}"
+          $releasesUrl = "https://api.github.com/repos/$owner/$repo/releases/tags/$tag"
+          $headers = @{
+              "Accept" = "application/vnd.github.v3+json"
+              "Authorization" = "token $credentials"
+          }
+          $releases = Invoke-WebRequest -Uri $releasesUrl -Headers $headers | ConvertFrom-Json
+          $assetId = ($releases.assets | Where-Object { $_.name -eq $file }).id
+          Write-Host "Asset ID: $assetId"
+          $url = "https://" + $credentials + ":@api.github.com/repos/$owner/$repo/releases/assets/$assetId"
+          $headers2 = @{
+              "Accept" = "application/octet-stream"
+              "Authorization" = "token $credentials"
+          }
+          Invoke-WebRequest -Uri $url -Headers $headers2 -OutFile $exe
         } else {
           Write-Host "llvm-msvc_X86_64_installer.exe already exists."
         }
@@ -69,4 +85,3 @@ runs:
         Write-Host "llvm-msvc_X86_64_installer.exe installed successfully."
       shell: powershell
       
-
